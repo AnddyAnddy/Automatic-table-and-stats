@@ -113,6 +113,7 @@ class Admin(commands.Cog):
                 os.makedirs(os.path.dirname(data.full_path), exist_ok=True)
                 with open(data.full_path, "w+") as f:
                     json.dump(data.data, f, indent=4, cls=EnhancedJSONEncoder)
+                SERVER.update()
                 raise ValueError(
                     "Error : "
                     f"{ctx.author.mention} your report has some warnings, it is saved but with those issues:\n{msg}\n"

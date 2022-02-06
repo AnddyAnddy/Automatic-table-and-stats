@@ -44,7 +44,9 @@ class Team:
 
 class Table:
     def __init__(self, div):
-        self.teams: dict[str, Team] = dict()
+        with open("resources/teams/teams.json") as f:
+            teams = json.load(f)[f"div{div}"]
+            self.teams: dict[str, Team] = {team: Team(name=team) for team in teams}
         self.div = div
 
     def update(self):
@@ -56,9 +58,6 @@ class Table:
                 if game["div"] != self.div:
                     continue
                 score = game["score"]
-                for team, nb_goals in score.items():
-                    if team not in self.teams:
-                        self.teams[team] = Team(name=team)
                 team1, team2 = score.keys()
                 self.teams[team1].update(score[team1], score[team2])
                 self.teams[team2].update(score[team2], score[team1])

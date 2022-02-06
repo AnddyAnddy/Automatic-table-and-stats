@@ -33,6 +33,8 @@ class Updater:
         for filename in glob.glob("resources/results/*/*.json"):
             with open(filename, "r") as f:
                 game: dict = json.load(f)
+                if "team1" not in game:
+                    continue
                 for team in ("team1", "team2"):
                     for stat, players in game[team].items():
                         convert_to_player_stat = Matching.game_to_player[stat]
@@ -152,6 +154,8 @@ class Server:
         Updater().update_all()
         self.players: Players = Players()
         self.sorted = Sorted(self.players)
+        self.table_div1 = Table(1)
+        self.table_div2 = Table(2)
         self.table_div1.update()
         self.table_div2.update()
 

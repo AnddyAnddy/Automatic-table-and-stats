@@ -8,6 +8,7 @@ from discord.ext import commands
 
 from src.modules.colors import Color
 from src.modules.game import Game
+from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
     TimeLeaderboardList, TableList
 from src.modules.players import SERVER
@@ -120,7 +121,11 @@ class Infos(commands.Cog):
                 or
             !t 2
         """
-        data = sorted(SERVER.table(div).teams.values(), key=lambda t: t.points, reverse=True)
+
+        def sort_key(t: Team):
+            return t.points, t.goals_diff, t.goals_for, t.goals_against, t.wins, t.name
+
+        data = sorted(SERVER.table(div).teams.values(), key=lambda t: sort_key(t), reverse=True)
         await create_menu(TableList, ctx, data)
 
     def format_player_stats(self, players_stats):

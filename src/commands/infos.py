@@ -19,16 +19,22 @@ class Infos(commands.Cog):
         self._channels: dict[int, discord.abc.Messageable] = dict()
 
     @commands.command()
-    async def teams(self, ctx, div=""):
+    async def teams(self, ctx, div: int = 0):
+        """Get the teams.
+
+        Get teams from both div: !teams
+        Get teams from div 1: !teams 1
+        Get teams from div 2: !teams 2
+        """
         with open("resources/teams/teams.json", "r") as f:
             data = json.load(f)
         if not div:
             data = data["div1"] + data["div2"]
         else:
             try:
-                data = data[div]
+                data = data[f"div{div}"]
             except KeyError:
-                raise ValueError(f"Error : {div} is not a valid division, must be div1 or div2")
+                raise ValueError(f"Error : {div} is not a valid division, must be 1 or 2")
         data = sorted(data)
         await create_menu(TeamsList, ctx, data)
 

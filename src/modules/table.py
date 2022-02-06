@@ -1,8 +1,6 @@
 import glob
 import json
 
-import jsonpickle
-
 
 class Team:
     def __init__(self, name: str = "", games_played: int = 0, wins: int = 0, draws: int = 0,

@@ -12,8 +12,7 @@ from discord.ext.commands import has_permissions
 from dotenv import load_dotenv
 
 import config
-from src.modules.players import Updater, SERVER
-from src.modules.table import Table
+from src.modules.players import SERVER
 from src.modules.utils import TeamsList, create_menu
 
 load_dotenv()
@@ -102,55 +101,7 @@ def get_prefix2(id):
     return prefixes[id] if id in prefixes else "!"
 
 
-#
-# async def download_channel(ctx, channel_id):
-#     channel: discord.abc.Messageable = await BOT.fetch_channel(channel_id)
-#
-#     async for message in channel.history(limit=None, oldest_first=True):
-#         try:
-#             embed = message.embeds[0]
-#         except IndexError:
-#             continue
-#         filename = embed.footer.text.replace("/", "")
-#         full_path = os.path.join("raw/", filename + ".txt")
-#         if os.path.isfile(full_path):
-#             print(full_path + " already exists")
-#             continue
-#
-#         d_embed = embed.to_dict()
-#         game = d_embed["fields"][0]["value"] + d_embed["fields"][1]["value"]
-#         try:
-#             with open(full_path, "w+") as raw:
-#                 raw.write(game)
-#             # Game.parse(full_path, game)
-#         except Exception:
-#             pass
-#     await ctx.send("Finished parsing")
-#
-#
-# @BOT.command(pass_context=True, hidden=True)
-# async def download_raw_data(ctx):
-#     print("getting raw data")
-#     await ctx.send(f"Report scrim: {datetime.now()}")
-#     await download_channel(ctx, 726932424172371968)
-#     await ctx.send(f"Report scrim finished at: {datetime.now()}")
-#     await ctx.send(f"Report offi: {datetime.now()}")
-#     await download_channel(ctx, 726932351241814117)
-#     await ctx.send(f"Report offi: {datetime.now()}")
-#     await ctx.send("Finished parsing")
-#
-#
-# @BOT.command(pass_context=True, hidden=True)
-# async def parse_raw(ctx):
-#     await ctx.send("Starting parsing")
-#     for filename in glob.glob("raw/*.txt"):
-#         with open(filename, "r") as file:
-#             filename = filename.replace("raw", "bff2").replace("txt", "json")
-#             Game.parse(filename, file.read())
-#     await ctx.send("Finished converting")
-
-
-@BOT.command(hidden=True)
+@BOT.command(hidden=True, enabled=False)
 async def get_teams(ctx, *category_id: int):
     def predicate(channel: GuildChannel) -> bool:
         try:

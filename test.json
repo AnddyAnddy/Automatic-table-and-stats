@@ -1,0 +1,51 @@
+{
+    "team1": {
+        "time_played": {
+            "jsad": 420,
+            "furya": 386,
+            "escape": 355,
+            "todiboleator": 300,
+            "july4th ": 218
+        },
+        "scorers": {
+            "furya": 1
+        },
+        "assisters": {
+            "escape": 1
+        },
+        "cs": {},
+        "saves": {
+            "jsad": 3,
+            "escape": 1,
+            "todiboleator": 1,
+            "july4th ": 1
+        },
+        "own goals": {}
+    },
+    "team2": {
+        "time_played": {
+            "thegoal": 420,
+            "ki\u0438g \ud83e\udd5b\ud83c\udf53": 420,
+            "del": 420,
+            "hassan da silva": 420
+        },
+        "scorers": {
+            "thegoal": 1,
+            "ki\u0438g \ud83e\udd5b\ud83c\udf53": 2,
+            "del": 3,
+            "hassan da silva": 3
+        },
+        "assisters": {
+            "ki\u0438g \ud83e\udd5b\ud83c\udf53": 2,
+            "del": 4,
+            "hassan da silva": 2
+        },
+        "cs": {},
+        "saves": {
+            "thegoal": 4,
+            "ki\u0438g \ud83e\udd5b\ud83c\udf53": 2,
+            "hassan da silva": 1
+        },
+        "own goals": {}
+    }
+}

@@ -151,7 +151,7 @@ class Admin(commands.Cog):
 
     @edit.command()
     async def score(self, ctx, matchday: int, team1: str, score_team1: int, score_team2: int, team2: str):
-        """Edit the recs of a game.
+        """Edit the score of game.
 
         Example:
             I want to edit the score of the game Balls be snakin vs champions, which is the matchday 5.
@@ -171,7 +171,7 @@ class Admin(commands.Cog):
 
     @edit.command()
     async def stat(self, ctx, matchday: int, one_team, *, one_stat_per_line: str):
-        """Edit the recs of a game.
+        """Edit the players stats of a game.
 
         Example:
             I want to edit some stats of the game Balls be snakin vs Swifties, which is the matchday 5.
@@ -203,7 +203,7 @@ class Admin(commands.Cog):
 
     @edit.command(aliases=["nick", "nicks"])
     async def nickname(self, ctx, matchday: int, one_team, *, nicknames_list: str):
-        """Edit the recs of a game.
+        """Edit the nicknames of a game.
 
         Example:
             I want to edit some stats of the game Balls be snakin vs champions, which is the matchday 5.

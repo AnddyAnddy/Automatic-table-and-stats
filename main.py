@@ -186,14 +186,17 @@ async def send_global_error(ctx, desc):
 @BOT.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CommandNotFound):
-        return await send_error(ctx, f"The command doesn't exist, check `!fcmds {ctx.invoked_with}` !", read_help=False)
+        return await send_error(ctx, f"The command doesn't exist, check `!help` !", read_help=False)
+
+    elif isinstance(error, commands.errors.MissingRequiredArgument):
+        return await send_error(ctx, str(error))
     elif isinstance(error, commands.errors.CommandInvokeError):
         if isinstance(error.original, ValueError):
             if str(error.original).startswith("Error"):
                 return await send_error(ctx, str(error.original))
             if str(error.original).startswith("Global"):
                 return await send_global_error(ctx, str(error.original))
-    await ctx.send(error.original)
+    await ctx.send(str(error))
     raise error
 
 

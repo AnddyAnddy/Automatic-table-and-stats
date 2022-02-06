@@ -46,15 +46,19 @@ class Table:
             teams = json.load(f)[f"div{div}"]
             self.teams: dict[str, Team] = {team: Team(name=team) for team in teams}
         self.div = div
+        self.results_done = set()
 
     def update(self):
         path = f"resources/tables/div{self.div}.json"
         json.dump({}, open(path, "w+"))
         for filename in glob.glob("resources/results/*/*.json"):
+            if filename in self.results_done:
+                continue
             with open(filename, "r") as f:
                 game: dict = json.load(f)
                 if game["div"] != self.div:
                     continue
+                self.results_done.add(filename)
                 score = game["score"]
                 team1, team2 = score.keys()
                 self.teams[team1].update(score[team1], score[team2])

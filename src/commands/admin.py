@@ -12,7 +12,7 @@ from src.modules.data import Data
 from src.modules.game import Game
 from src.modules.json_encoder import EnhancedJSONEncoder
 from src.modules.players import SERVER
-from src.modules.utils import find_game
+from src.modules.utils import find_game, delete_game
 
 
 class Admin(commands.Cog):
@@ -46,6 +46,13 @@ class Admin(commands.Cog):
             raw.write(game)
 
         return game
+
+    @commands.command()
+    async def delete(self, ctx, matchday: int, one_team):
+        """Delete a game report."""
+        deleted_game = delete_game(matchday, one_team)
+        await ctx.send(embed=Embed(color=Color.DEFAULT, description=f"{deleted_game} was deleted from the db"))
+        SERVER.update()
 
     @commands.command(aliases=["c", "cp"])
     async def create_report(self, ctx, *, txt):

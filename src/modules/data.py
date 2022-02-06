@@ -120,7 +120,7 @@ class Data:
         try:
             score = [line for line in infos if any(team in line for team in all_teams)][0]
             score = re.split(r" +(\d+).*(\d+) +", score)
-            args_score = score[0], int(score[1]), int(score[2]), score[3].strip()
+            args_score = score[0].strip(), int(score[1]), int(score[2]), score[3].strip()
             self._data["score"] = {args_score[0]: args_score[1], args_score[3]: args_score[2]}
             self._data["title"] = f"{args_score[0]} {args_score[1]} - {args_score[2]} {args_score[3]}"
             self._data["div"] = 1 if args_score[0] in teams["div1"] else 2

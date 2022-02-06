@@ -158,4 +158,5 @@ class Server:
     def table(self, div) -> Table:
         return self.table_div1 if div == 1 else self.table_div2
 
+
 SERVER = Server()

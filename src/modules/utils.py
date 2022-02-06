@@ -140,6 +140,19 @@ def find_game(matchday: int, *teams):
         raise ValueError(f"Error : Could not find a match with matchday: {matchday} and team(s) {teams}")
 
 
+def delete_game(matchday: int, *teams):
+    path = os.path.join("resources/results/", str(matchday))
+    filenames = [filename for filename in glob.glob(f"{path}/*")]
+    try:
+        results = [filename for filename in filenames if any(team in filename for team in teams)]
+        if len(results) > 1:
+            raise ValueError(f"Error : Found more than one match with matchday: {matchday} and team(s) {teams}")
+        os.remove(results[0])
+        return results[0]
+    except Exception:
+        raise ValueError(f"Error : Could not find a match with matchday: {matchday} and team(s) {teams}")
+
+
 def all_tuple_to_int(values):
     return tuple(int(v) for v in values)
 

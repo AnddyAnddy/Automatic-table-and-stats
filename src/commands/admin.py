@@ -4,7 +4,6 @@ import re
 
 import discord
 from discord import Embed
-from discord.abc import GuildChannel
 from discord.ext import commands
 
 from src.modules.colors import Color
@@ -12,6 +11,7 @@ from src.modules.data import Data
 from src.modules.game import Game
 from src.modules.json_encoder import EnhancedJSONEncoder
 from src.modules.players import SERVER
+from src.modules.roles import Roles
 from src.modules.utils import find_game, delete_game
 
 
@@ -48,6 +48,7 @@ class Admin(commands.Cog):
         return game
 
     @commands.command()
+    @commands.has_any_role(*Roles.admins())
     async def delete(self, ctx, matchday: int, one_team):
         """Delete a game report."""
         deleted_game = delete_game(matchday, one_team)
@@ -55,6 +56,7 @@ class Admin(commands.Cog):
         SERVER.update()
 
     @commands.command(aliases=["c", "cp"])
+    @commands.has_any_role(*Roles.captains())
     async def create_report(self, ctx, *, txt):
         """Create a game report.
 
@@ -122,6 +124,7 @@ class Admin(commands.Cog):
         SERVER.update()
 
     @commands.group(invoke_without_command=True)
+    @commands.has_any_role(*Roles.admins())
     async def edit(self, ctx, subcommand):
         """Edit a report.
 
@@ -133,6 +136,7 @@ class Admin(commands.Cog):
                                                "Use help edit <subcommand> for more clarifications."))
 
     @edit.command(aliases=["recs"])
+    @commands.has_any_role(*Roles.admins())
     async def rec(self, ctx, matchday: int, one_team, *recs):
         """Edit the recs of a game.
 
@@ -158,6 +162,7 @@ class Admin(commands.Cog):
         data.save()
 
     @edit.command()
+    @commands.has_any_role(*Roles.admins())
     async def score(self, ctx, matchday: int, team1: str, score_team1: int, score_team2: int, team2: str):
         """Edit the score of game.
 
@@ -177,7 +182,8 @@ class Admin(commands.Cog):
             title=f"{data.title}: Score edited by {ctx.author.display_name}")
         )
 
-    @edit.command()
+    @edit.command(aliases=["stats"])
+    @commands.has_any_role(*Roles.admins())
     async def stat(self, ctx, matchday: int, one_team, *, one_stat_per_line: str):
         """Edit the players stats of a game.
 
@@ -210,6 +216,7 @@ class Admin(commands.Cog):
         data.save()
 
     @edit.command(aliases=["nick", "nicks"])
+    @commands.has_any_role(*Roles.admins())
     async def nickname(self, ctx, matchday: int, one_team, *, nicknames_list: str):
         """Edit the nicknames of a game.
 

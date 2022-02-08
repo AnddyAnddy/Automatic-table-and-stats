@@ -72,7 +72,8 @@ class Infos(commands.Cog):
 
         if game["warnings"]:
             embed.set_footer(text=f"Warnings: {game['warnings']}")
-        await ctx.send(embed=embed)
+        recs = "\n".join(game["recs"])
+        await ctx.send(recs, embed=embed)
 
     @commands.group(invoke_without_command=True, aliases=["lb"])
     async def leaderboard(self, ctx, key):

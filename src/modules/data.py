@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from src.modules import aliases
 from src.modules.json_encoder import EnhancedJSONEncoder
 from src.modules.players import SERVER
-from src.modules.utils import clean_rec
+from src.modules.utils import clean_rec, game_exists
 
 
 @dataclass
@@ -77,6 +77,7 @@ class Data:
         self._get_matchday(infos)
         self._get_score(infos)
         self._get_discord_ids(infos)
+        self._check_match_does_not_exist()
 
     def edit_score(self, team1, team2, score_team1, score_team2):
         self._check_arg_in_team_scores(team1)
@@ -105,6 +106,10 @@ class Data:
         with open(self.full_path, "w+") as f:
             json.dump(self.data, f, indent=4, cls=EnhancedJSONEncoder)
         SERVER.update()
+
+    def _check_match_does_not_exist(self):
+        if game_exists(self._data["matchday"], *self._data["score"].keys()):
+            raise ValueError(f"Error : The game already exist: {self.title}")
 
     def _get_matchday(self, infos: list[str]):
         try:

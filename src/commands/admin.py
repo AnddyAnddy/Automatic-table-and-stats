@@ -56,7 +56,7 @@ class Admin(commands.Cog):
         SERVER.update()
 
     @commands.command(aliases=["c", "cp"])
-    @commands.has_any_role(*Roles.captains())
+    # @commands.has_any_role(*Roles.captains())
     async def create_report(self, ctx, *, txt):
         """Create a game report.
 
@@ -115,13 +115,12 @@ class Admin(commands.Cog):
                 os.makedirs(os.path.dirname(data.full_path), exist_ok=True)
                 with open(data.full_path, "w+") as f:
                     json.dump(data.data, f, indent=4, cls=EnhancedJSONEncoder)
-                SERVER.update()
+                data.save()
                 raise ValueError(
                     "Error : "
                     f"{ctx.author.mention} your report has some warnings, it is saved but with those issues:\n{msg}\n"
                 )
 
-        SERVER.update()
 
     @commands.group(invoke_without_command=True)
     @commands.has_any_role(*Roles.admins())

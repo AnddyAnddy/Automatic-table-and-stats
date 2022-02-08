@@ -136,8 +136,18 @@ def find_game(matchday: int, *teams):
         if len(results) > 1:
             raise ValueError(f"Error : Found more than one match with matchday: {matchday} and team(s) {teams}")
         return json.load(open(results[0]))
+    except ValueError:
+        raise
     except Exception:
         raise ValueError(f"Error : Could not find a match with matchday: {matchday} and team(s) {teams}")
+
+
+def game_exists(matchday, *teams):
+    path = os.path.join("resources/results/", str(matchday))
+    filenames = [filename for filename in glob.glob(f"{path}/*")]
+    print(teams)
+    results = [filename for filename in filenames if any(team in filename for team in teams)]
+    return len(results) == 1
 
 
 def delete_game(matchday: int, *teams):
@@ -149,6 +159,8 @@ def delete_game(matchday: int, *teams):
             raise ValueError(f"Error : Found more than one match with matchday: {matchday} and team(s) {teams}")
         os.remove(results[0])
         return results[0]
+    except ValueError:
+        raise
     except Exception:
         raise ValueError(f"Error : Could not find a match with matchday: {matchday} and team(s) {teams}")
 

@@ -73,8 +73,14 @@ class Infos(commands.Cog):
 
         if game["warnings"]:
             embed.set_footer(text=f"Warnings: {game['warnings']}")
-        recs = "\n".join(game["recs"])
-        await ctx.send(recs, embed=embed)
+        links = []
+        if game["recs"]:
+            links.append(*game["recs"])
+        for discord_info in game["discord_infos"]:
+            discord_links = f"https://discord.com/channels/635822055601864705/" \
+                            f"{discord_info['channel_id']}/{discord_info['message_id']}"
+            links.append(discord_links)
+        await ctx.send('\n'.join(links), embed=embed)
 
     @commands.group(invoke_without_command=True, aliases=["lb"])
     async def leaderboard(self, ctx, key: typing.Literal["time", "goals", "assists", "saves", "cs", "og"],

@@ -1,6 +1,7 @@
 import glob
 import json
 import os.path
+import typing
 
 import discord
 from discord import Embed
@@ -11,7 +12,7 @@ from src.modules.game import Game
 from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
     TimeLeaderboardList, TableList
-from src.modules.players import SERVER
+from src.modules.players import SERVER, Leaderboard
 
 
 class Infos(commands.Cog):
@@ -20,7 +21,7 @@ class Infos(commands.Cog):
         self._channels: dict[int, discord.abc.Messageable] = dict()
 
     @commands.command()
-    async def teams(self, ctx, div: int = 0):
+    async def teams(self, ctx, div: typing.Literal[1, 2] = 1):
         """Get the teams.
 
         Get teams from both div: !teams
@@ -76,11 +77,12 @@ class Infos(commands.Cog):
         await ctx.send(recs, embed=embed)
 
     @commands.group(invoke_without_command=True, aliases=["lb"])
-    async def leaderboard(self, ctx, key):
+    async def leaderboard(self, ctx, key, div: typing.Literal[1, 2] = 1):
         """See the leaderboard of a specific stat.
 
         Available stats: time, goals, assists, saves, cs, og
         """
+        # data = Leaderboard.sort_by(key, div)
         data = SERVER.sorted.sort_players_by(key)
         cls = TimeLeaderboardList if key == "time" else NormalLeaderboardList
         await create_menu(cls, ctx, data, key=key)
@@ -114,7 +116,7 @@ class Infos(commands.Cog):
         await create_menu(MatchdayList, ctx, data, matchday="[ALL]")
 
     @commands.command(aliases=["t"])
-    async def table(self, ctx, div: int = 1):
+    async def table(self, ctx, div: typing.Literal[1, 2] = 1):
         """See the table of a specific division (1 or 2).
 
         Example:

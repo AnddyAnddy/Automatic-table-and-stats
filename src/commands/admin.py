@@ -1,3 +1,5 @@
+import glob
+import json
 import os
 import re
 
@@ -9,7 +11,7 @@ from src.modules.colors import Color
 from src.modules.data import Data
 from src.modules.players import SERVER
 from src.modules.roles import Roles
-from src.modules.utils import find_game, delete_game
+from src.modules.utils import find_game, delete_game, create_menu, MatchdayList
 
 
 class Admin(commands.Cog):
@@ -174,6 +176,21 @@ class Admin(commands.Cog):
         )
         data.save()
 
+    @commands.command(aliases=["w"])
+    async def warnings(self, ctx):
+        """See all warnings.
+
+        A warning is added whenever an information was missing in a report."""
+        path = os.path.join("resources/results/")
+        filenames = [filename for filename in glob.glob(f"{path}/*/*")]
+        data = []
+        for filename in filenames:
+            with open(filename, "r") as f:
+                d = json.load(f)
+                if d["warnings"]:
+                    data.append(d["score"])
+
+        await create_menu(MatchdayList, ctx, data, matchday="[ALL]")
     #
     # @commands.command(enabled=False)
     # async def set_teams(self, ctx, *category_id: int):

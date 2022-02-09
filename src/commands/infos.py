@@ -9,10 +9,10 @@ from discord.ext import commands
 
 from src.modules.colors import Color
 from src.modules.game import Game
+from src.modules.players import SERVER
 from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
     TimeLeaderboardList, TableList
-from src.modules.players import SERVER, Leaderboard
 
 
 class Infos(commands.Cog):
@@ -98,22 +98,6 @@ class Infos(commands.Cog):
                 data.append(json.load(f)["score"])
 
         await create_menu(MatchdayList, ctx, data, matchday=matchday)
-
-    @commands.command(aliases=["w"])
-    async def warnings(self, ctx):
-        """See all warnings.
-
-        A warning is added whenever an information was missing in a report."""
-        path = os.path.join("resources/results/")
-        filenames = [filename for filename in glob.glob(f"{path}/*/*")]
-        data = []
-        for filename in filenames:
-            with open(filename, "r") as f:
-                d = json.load(f)
-                if d["warnings"]:
-                    data.append(d["score"])
-
-        await create_menu(MatchdayList, ctx, data, matchday="[ALL]")
 
     @commands.command(aliases=["t"])
     async def table(self, ctx, div: typing.Literal[1, 2] = 1):

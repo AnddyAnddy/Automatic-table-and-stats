@@ -2,8 +2,10 @@ import json
 import os
 
 import discord
+from discord import Embed
 from discord.ext import commands
 
+from src.modules.colors import Color
 from src.modules.data import Data
 from src.modules.game import Game
 from src.modules.json_encoder import EnhancedJSONEncoder
@@ -78,34 +80,19 @@ class Captain(commands.Cog):
             halves.append(Game.parse(text_game, i != 0))
         data.construct_report(halves)
 
-        if not data.errors and not data.warnings:
+        if not data.warnings:
             await ctx.message.add_reaction("✅")
-            data.save()
+
         else:
-            emoji = []
-            msg = ""
-            if data.errors:
-                emoji.append("❌")
-                msg += "\n - ERROR: " + "\n - ERROR: ".join(data.errors) + "\n"
-            if data.warnings:
-                emoji.append("🇼")
-                msg += "\n - WARNING: " + "\n - WARNING: ".join(data.warnings) + "\n"
-            for e in emoji:
-                await ctx.message.add_reaction(e)
-            if data.errors:
-                raise ValueError(
-                    "Error : "
-                    f"{ctx.author.mention} your report has some errors, it is not saved because of: \n{msg}\n"
-                )
-            else:
-                os.makedirs(os.path.dirname(data.full_path), exist_ok=True)
-                with open(data.full_path, "w+") as f:
-                    json.dump(data.data, f, indent=4, cls=EnhancedJSONEncoder)
-                data.save()
-                raise ValueError(
-                    "Error : "
-                    f"{ctx.author.mention} your report has some warnings, it is saved but with those issues:\n{msg}\n"
-                )
+            msg = "\n - WARNING: " + "\n - WARNING: ".join(data.warnings) + "\n"
+            await ctx.message.add_reaction("🇼")
+            await ctx.send(embed=Embed(
+                color=Color.DEFAULT,
+                description="Error : "
+                            f"{ctx.author.mention} your report has some warnings, "
+                            f"it is saved but with those issues:\n{msg}\n"
+            ))
+        data.save()
 
 
 def setup(bot):

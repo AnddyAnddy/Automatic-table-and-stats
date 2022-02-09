@@ -116,7 +116,7 @@ class Data:
             matchday = [line for line in infos if "matchday" in line]
             self._data["matchday"] = int(re.findall(r".*(\d+).*", matchday[0])[0])
         except (IndexError, ValueError):
-            self.errors.append("The match day is missing or incorrect, please follow the format: `matchday N`")
+            raise ValueError("Error : The match day is missing or incorrect, please follow the format: `matchday N`")
 
     def _get_score(self, infos: list[str]):
         with open("resources/teams/teams.json") as f:
@@ -124,16 +124,22 @@ class Data:
             all_teams = teams["div1"] + teams["div2"]
         try:
             score = [line for line in infos if any(team in line for team in all_teams)][0]
+            only_words = re.split("\W+| ", score)
+            team1 = [x for x in only_words if x in all_teams][0].strip()
+            team2 = [x for x in reversed(only_words) if x in all_teams][0].strip()
+            if team1 == team2 or team1 not in all_teams or team2 not in all_teams:
+                raise Exception()
             score = re.split(r" +(\d+).*(\d+) +", score)
-            args_score = score[0].strip(), int(score[1]), int(score[2]), score[3].strip()
+            args_score = team1, int(score[1]), int(score[2]), team2
             self._data["score"] = {args_score[0]: args_score[1], args_score[3]: args_score[2]}
             self._data["title"] = f"{args_score[0]} {args_score[1]} - {args_score[2]} {args_score[3]}"
             self._data["div"] = 1 if args_score[0] in teams["div1"] else 2
         except Exception:
-            self.errors.append("Can not find 2 teams in your message, make sure they are in !teams")
             self._data["score"] = "Unknown"
             self._data["title"] = "Unknown"
             self._data["div"] = 0
+            raise ValueError("Error : Can not find 2 teams in your message, make sure they are in !teams")
+
 
     def _get_rec(self, infos: list[str]):
         recs = [clean_rec(line) for line in infos if "thehax" in line]

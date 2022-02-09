@@ -145,7 +145,6 @@ def find_game(matchday: int, *teams):
 def game_exists(matchday, *teams):
     path = os.path.join("resources/results/", str(matchday))
     filenames = [filename for filename in glob.glob(f"{path}/*")]
-    print(teams)
     results = [filename for filename in filenames if any(team in filename for team in teams)]
     return len(results) == 1
 

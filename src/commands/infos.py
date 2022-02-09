@@ -9,7 +9,7 @@ from discord.ext import commands
 
 from src.modules.colors import Color
 from src.modules.game import Game
-from src.modules.players import SERVER
+from src.modules.players import SERVER, Leaderboard
 from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
     TimeLeaderboardList, TableList
@@ -82,9 +82,10 @@ class Infos(commands.Cog):
 
         Available stats: time, goals, assists, saves, cs, og
         """
-        # data = Leaderboard.sort_by(key, div)
-        data = SERVER.sorted.sort_players_by(key)
+        data = Leaderboard.sort_by(key, div)
+        # data = SERVER.sorted.sort_players_by(key)
         cls = TimeLeaderboardList if key == "time" else NormalLeaderboardList
+        print(data)
         await create_menu(cls, ctx, data, key=key)
 
     @commands.command(aliases=["md"])

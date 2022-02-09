@@ -149,6 +149,8 @@ async def on_command_error(ctx, error):
                 return await send_global_error(ctx, str(error.original))
     elif isinstance(error, commands.errors.BadArgument):
         return await send_error(ctx, str(error))
+    elif isinstance(error, commands.errors.BadLiteralArgument):
+        return await send_error(ctx, str(error))
     await ctx.send(str(error))
     raise error
 

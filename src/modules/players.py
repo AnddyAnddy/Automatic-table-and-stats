@@ -35,12 +35,14 @@ class Updater:
                 game: dict = json.load(f)
                 if "team1" not in game:
                     continue
+
                 for team in ("team1", "team2"):
                     for stat, players in game[team].items():
                         convert_to_player_stat = Matching.game_to_player[stat]
                         for player, n in players.items():
                             if player not in self.players_db:
                                 self.players_db[player] = {stat: 0 for stat in Matching.player_to_game}
+                                self.players_db[player]["div"] = game["div"]
                             self.players_db[player][convert_to_player_stat] += n
 
         with open("resources/players/players.json", "w+") as db:
@@ -141,6 +143,18 @@ class Sorted:
             setattr(self, key,
                     [(k, v[key], v["time"]) for k, v in
                      sorted(players.players.items(), reverse=True, key=lambda item: item[1][key])])
+
+
+class Leaderboard:
+    player_path = "resources/players/players.json"
+
+    @staticmethod
+    def sort_by(key, div: int = None):
+        with open(Leaderboard.player_path, "r") as db:
+            players: dict = json.load(db)
+        if div is not None:
+            players = {k: v for k, v in players.items() if k["div"] == div}
+        return sorted(players.items(), reverse=True, key=lambda item: item[1][key])
 
 
 class Server:

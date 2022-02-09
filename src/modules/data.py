@@ -134,7 +134,6 @@ class Data:
             self._data["title"] = f"{args_score[0]} {args_score[1]} - {args_score[2]} {args_score[3]}"
             self._data["div"] = 1 if args_score[0] in teams["div1"] else 2
         except Exception:
-            raise
             self._data["score"] = "Unknown"
             self._data["title"] = "Unknown"
             self._data["div"] = 0

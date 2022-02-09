@@ -93,14 +93,14 @@ class Infos(commands.Cog):
         """See the ratio leaderboard of a specific stat.
 
         Available stats: time, goals, assists, saves, cs, og
-        Page: the number of the page you want to show, 20 players per page
+        Div: 1 for div 1 and 2 for div 1
         Min time: the minimum time you want players to have played in order to appear in the leaderboard
         """
 
         data = [p for p in sorted(Leaderboard.sort_by(key, div),
                                   reverse=True,
                                   key=lambda x: x[1] / x[2] if x[2] != 0 else x[1])
-                if p[2] >= min_time
+                if p[2] // 60 >= min_time
                 ]
         await create_menu(NormalLeaderboardList, ctx, data, key=key)
 

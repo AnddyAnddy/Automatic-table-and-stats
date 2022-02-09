@@ -77,16 +77,32 @@ class Infos(commands.Cog):
         await ctx.send(recs, embed=embed)
 
     @commands.group(invoke_without_command=True, aliases=["lb"])
-    async def leaderboard(self, ctx, key, div: typing.Literal[1, 2] = 1):
+    async def leaderboard(self, ctx, key: typing.Literal["time", "goals", "assists", "saves", "cs", "og"],
+                          div: typing.Literal[1, 2] = 1):
         """See the leaderboard of a specific stat.
 
         Available stats: time, goals, assists, saves, cs, og
         """
         data = Leaderboard.sort_by(key, div)
-        # data = SERVER.sorted.sort_players_by(key)
         cls = TimeLeaderboardList if key == "time" else NormalLeaderboardList
-        print(data)
         await create_menu(cls, ctx, data, key=key)
+
+    @commands.command(aliases=["r", "rlb"])
+    async def ratio_leaderboard(self, ctx, key: typing.Literal["time", "goals", "assists", "saves", "cs", "og"],
+                                div: typing.Literal[1, 2] = 1, min_time=0):
+        """See the ratio leaderboard of a specific stat.
+
+        Available stats: time, goals, assists, saves, cs, og
+        Page: the number of the page you want to show, 20 players per page
+        Min time: the minimum time you want players to have played in order to appear in the leaderboard
+        """
+
+        data = [p for p in sorted(Leaderboard.sort_by(key, div),
+                                  reverse=True,
+                                  key=lambda x: x[1] / x[2] if x[2] != 0 else x[1])
+                if p[2] >= min_time
+                ]
+        await create_menu(NormalLeaderboardList, ctx, data, key=key)
 
     @commands.command(aliases=["md"])
     async def matchday(self, ctx, matchday: int):

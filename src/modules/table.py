@@ -45,6 +45,10 @@ class Table:
         with open("resources/teams/teams.json") as f:
             teams = json.load(f)[f"div{div}"]
             self.teams: dict[str, Team] = {team: Team(name=team) for team in teams}
+        with open("resources/malus/malus.json") as malus_fp:
+            teams = json.load(malus_fp)
+            for team, malus in teams.items():
+                self.teams[team].malus = malus
         self.div = div
         self.results_done = set()
 

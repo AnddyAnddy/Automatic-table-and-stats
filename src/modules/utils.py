@@ -51,13 +51,15 @@ class NormalLeaderboardList(menus.ListPageSource):
 
     async def format_page(self, menu: discord.ext.menus.Menu, entries):
         def ratio(stat, time):
-            t = time // 60
-            r = stat / t if t != 0 else stat
-            return f"{r * 100:>10.2f}"
+            if time == 0:
+                rat = stat
+            else:
+                rat = stat / (time // 60)
+            return f"{rat * 100:>10.2f}"
 
         offset = menu.current_page * self.per_page
         desc = '```\n'
-        r = f"{self.key} / time %"
+        r = f"{self.key} / 14 mins %"
         desc += f'pos {"name":<20} {self.key:>10} {"time":>10} {r:>12}\n\n'
         return Embed(
             color=Color.DEFAULT,

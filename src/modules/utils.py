@@ -54,12 +54,12 @@ class NormalLeaderboardList(menus.ListPageSource):
             if time == 0:
                 rat = stat
             else:
-                rat = stat / (time // 60)
+                rat = stat / (time // (60 * 14))
             return f"{rat * 100:>10.2f}"
 
         offset = menu.current_page * self.per_page
         desc = '```\n'
-        r = f"{self.key} / 14m %"
+        r = f"{self.key}/game %"
         desc += f'pos {"name":<20} {self.key:>10} {"time":>10} {r:>12}\n\n'
         return Embed(
             color=Color.DEFAULT,

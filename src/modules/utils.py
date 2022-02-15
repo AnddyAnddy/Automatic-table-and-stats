@@ -59,7 +59,7 @@ class NormalLeaderboardList(menus.ListPageSource):
 
         offset = menu.current_page * self.per_page
         desc = '```\n'
-        r = f"{self.key} / 14 mins %"
+        r = f"{self.key} / 14m %"
         desc += f'pos {"name":<20} {self.key:>10} {"time":>10} {r:>12}\n\n'
         return Embed(
             color=Color.DEFAULT,

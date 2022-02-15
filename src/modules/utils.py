@@ -52,6 +52,8 @@ class NormalLeaderboardList(menus.ListPageSource):
     async def format_page(self, menu: discord.ext.menus.Menu, entries):
         def ratio(stat, time):
             t = time // 60
+            if self.key == "cs":
+                t *= 7
             rat = stat / t if t != 0 else stat
             return f"{rat * 100:>10.2f}"
 

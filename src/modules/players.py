@@ -154,7 +154,8 @@ class Leaderboard:
             players: dict = json.load(db)
         if div is not None:
             players = {k: v for k, v in players.items() if v["div"] == div}
-        return [(k, v[key], v["time"]) for k, v in sorted(players.items(), reverse=True, key=lambda item: item[1][key])]
+        return [(k, v[key], v["time"]) for k, v in sorted(players.items(), reverse=True, key=lambda item: item[1][key])
+                if v[key] > 0]
 
 
 class Server:

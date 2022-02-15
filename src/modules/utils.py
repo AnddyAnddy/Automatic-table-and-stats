@@ -53,13 +53,13 @@ class NormalLeaderboardList(menus.ListPageSource):
         def ratio(stat, time):
             t = time // 60
             if self.key == "cs":
-                t *= 7
+                t = time // (60 * 7)
             rat = stat / t if t != 0 else stat
             return f"{rat * 100:>10.2f}"
 
         offset = menu.current_page * self.per_page
         desc = '```\n'
-        r = f"{self.key}/mins %"
+        r = f"{self.key}/{'mins' if self.key != 'cs' else 'half'} %"
         desc += f'pos {"name":<20} {self.key:>10} {"time":>10} {r:>12}\n\n'
         return Embed(
             color=Color.DEFAULT,

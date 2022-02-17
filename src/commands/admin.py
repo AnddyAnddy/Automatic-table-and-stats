@@ -106,12 +106,14 @@ class Admin(commands.Cog):
         Warning: This will override the previous score"""
         team1, team2 = team1.lower(), team2.lower()
         data = Data(data=find_game(matchday, team1))
+        path = data.full_path
         data.edit_score(team1, team2, score_team1, score_team2)
-
+        os.remove(path)
         await ctx.send(embed=Embed(
             color=Color.DEFAULT,
             title=f"{data.title}: Score edited by {ctx.author.display_name}")
         )
+
 
     @edit.command(aliases=["stats"])
     @commands.has_any_role(*Roles.admins())

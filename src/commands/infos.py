@@ -53,23 +53,24 @@ class Infos(commands.Cog):
         game = find_game(matchday, *teams)
         team_name = ("ONE", "TWO")
         embed = Embed(color=Color.DEFAULT, title=f"MD: {game['matchday']} {game['title'].upper()}")
-        for i in range(1, 3):
-            team = "team" + str(i)
-            players_time = ""
-            players_stats = {}
-            for key in game[team]:
-                for player, stat in game[team][key].items():
-                    if player not in players_stats:
-                        players_stats[player] = ""
-                    if key == "time_played":
-                        players_time += f"\n> **{player}**: {format_time(stat)}"
-                    else:
-                        players_stats[player] += f"{stat}{Game.reverse_stat_match[key]} "
-            formatted_ps = self.format_player_stats(players_stats)
-            embed.add_field(name=f":{team_name[i - 1].lower()}:        **TEAM {team_name[i - 1]}**",
-                            inline=True,
-                            value=f"{'―' * 11}\n\n" ":man_playing_handball: __**Players:**__\n" f"{players_time}"
-                                  f"\n\n{'―' * 11}\n\n {formatted_ps}")
+        if "team1" in game:
+            for i in (1, 2):
+                team = "team" + str(i)
+                players_time = ""
+                players_stats = {}
+                for key in game[team]:
+                    for player, stat in game[team][key].items():
+                        if player not in players_stats:
+                            players_stats[player] = ""
+                        if key == "time_played":
+                            players_time += f"\n> **{player}**: {format_time(stat)}"
+                        else:
+                            players_stats[player] += f"{stat}{Game.reverse_stat_match[key]} "
+                formatted_ps = self.format_player_stats(players_stats)
+                embed.add_field(name=f":{team_name[i - 1].lower()}:        **TEAM {team_name[i - 1]}**",
+                                inline=True,
+                                value=f"{'―' * 11}\n\n" ":man_playing_handball: __**Players:**__\n" f"{players_time}"
+                                      f"\n\n{'―' * 11}\n\n {formatted_ps}")
 
         if game["warnings"]:
             embed.set_footer(text=f"Warnings: {game['warnings']}")

@@ -127,7 +127,7 @@ class Data:
             score = [line for line in infos if any(team in line for team in all_teams)][0]
             score = re.split(r" +(\d+).*(\d+) +", score)
             for i in range(len(score)):
-                for team in teams:
+                for team in all_teams:
                     if team in score[i]:
                         score[i] = team
             args_score = score[0], int(score[1]), int(score[2]), score[3]

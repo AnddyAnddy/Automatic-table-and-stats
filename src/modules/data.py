@@ -78,6 +78,7 @@ class Data:
         self._get_score(infos)
         self._get_discord_ids(infos)
         self._check_match_does_not_exist()
+        self._prepare_stats()
 
     def edit_score(self, team1, team2, score_team1, score_team2):
         self._check_arg_in_team_scores(team1)
@@ -170,3 +171,10 @@ class Data:
     def _check_arg_in_team_scores(self, team):
         if team not in self._data["score"]:
             raise ValueError(f"Error : {team} is not a valid team for the match {self.title}")
+
+    def _prepare_stats(self):
+        game_stats = {
+            "team1": {"time_played": {}, "scorers": {}, "assisters": {}, "cs": {}, "saves": {}, "own goals": {}},
+            "team2": {"time_played": {}, "scorers": {}, "assisters": {}, "cs": {}, "saves": {}, "own goals": {}}
+        }
+        self._data.update(game_stats)

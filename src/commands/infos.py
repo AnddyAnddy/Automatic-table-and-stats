@@ -12,7 +12,7 @@ from src.modules.game import Game
 from src.modules.players import SERVER, Leaderboard
 from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
-    TimeLeaderboardList, TableList, get_real_time
+    TimeLeaderboardList, TableList, ratio
 
 
 class Infos(commands.Cog):
@@ -154,12 +154,11 @@ class Infos(commands.Cog):
         desc = "```py\n"
         desc += f'{"name":<15} {name:<20} {"stat / mins %":<10}\n'
         seconds = player["time"]
-        halves = f"{seconds // 840} halves"
-        desc += f'{"time":<15} {format_time(seconds):<20} {halves:<10}\n'
+        desc += f'{"time":<15} {format_time(seconds):<20}\n'
         for s in ('goals', 'assists', 'saves', 'cs', 'own goals'):
             val = player[s]
-            ratio = val / seconds if seconds != 0 else val
-            desc += f'{s:<15} {val:<20} {ratio * 100:<14.3f}\n'
+            r = ratio(val, seconds, s)
+            desc += f'{s:<15} {val:<20} {r}\n'
         desc += "```"
 
         await ctx.send(embed=Embed(title=name, description=desc))

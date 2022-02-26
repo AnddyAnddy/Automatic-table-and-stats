@@ -50,13 +50,6 @@ class NormalLeaderboardList(menus.ListPageSource):
         self.key = key
 
     async def format_page(self, menu: discord.ext.menus.Menu, entries):
-        def ratio(stat, time):
-            t = time // 60
-            if self.key == "cs":
-                t = time // (60 * 7)
-            rat = stat / t if t != 0 else stat
-            return f"{rat * 100:>10.2f}"
-
         offset = menu.current_page * self.per_page
         desc = '```\n'
         r = f"{self.key}/{'mins' if self.key != 'cs' else 'half'} %"
@@ -64,9 +57,10 @@ class NormalLeaderboardList(menus.ListPageSource):
         return Embed(
             color=Color.DEFAULT,
             description=
-            desc + '\n'.join([f"{add_zero(i + 1)}) {player:<20} {stat:>10} {format_time(time):>10} {ratio(stat, time)}"
-                              for i, (player, stat, time) in
-                              enumerate(entries, start=offset)])
+            desc + '\n'.join(
+                [f"{add_zero(i + 1)}) {player:<20} {stat:>10} {format_time(time):>10} {ratio(stat, time, self.key)}"
+                 for i, (player, stat, time) in
+                 enumerate(entries, start=offset)])
             + "```"
         ) \
             .set_footer(text=f"[ {menu.current_page + 1} / {self.get_max_pages()} ]")
@@ -184,3 +178,11 @@ def get_real_time(seconds):
     mins = f"0{mins}" if mins < 10 else str(mins)
 
     return f"{hours:<4}h{mins:>3}m"
+
+
+def ratio(stat, time, key):
+    t = time // 60
+    if key == "cs":
+        t = time // (60 * 7)
+    rat = stat / t if t != 0 else stat
+    return f"{rat * 100:>10.2f}"

@@ -154,7 +154,8 @@ class Infos(commands.Cog):
         desc = "```py\n"
         desc += f'{"name":<15} {name:<20} {"stat / mins %":<10}\n'
         seconds = player["time"]
-        desc += f'{"time (secs)":<15} {seconds:<20} {get_real_time(seconds):<10}\n'
+        halves = f"{seconds // 840} halves"
+        desc += f'{"time":<15} {format_time(seconds):<20} {halves:<10}\n'
         for s in ('goals', 'assists', 'saves', 'cs', 'own goals'):
             val = player[s]
             ratio = val / seconds if seconds != 0 else val

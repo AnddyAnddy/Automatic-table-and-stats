@@ -146,6 +146,7 @@ class Infos(commands.Cog):
     @commands.command(aliases=["s", "stat", "info"])
     async def stats(self, ctx, *, name):
         """See the stats of a specific player."""
+        name = name.lower()
         with open("resources/players/players.json") as f:
             players = json.load(f)
         if name not in players:

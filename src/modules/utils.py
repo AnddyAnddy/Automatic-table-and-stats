@@ -174,3 +174,13 @@ def all_tuple_to_int(values):
 def clean_rec(elem):
     split_pattern = "https://"
     return split_pattern + elem.split(split_pattern)[-1].strip()
+
+
+def get_real_time(total_minutes):
+    hours = total_minutes // 60
+    mins = total_minutes % 60
+
+    hours = f"0{hours}" if hours < 10 else str(hours)
+    mins = f"0{mins}" if mins < 10 else str(mins)
+
+    return f"{hours:<4}h{mins:>3}m"

@@ -12,7 +12,7 @@ from src.modules.game import Game
 from src.modules.players import SERVER, Leaderboard
 from src.modules.table import Team
 from src.modules.utils import TeamsList, create_menu, format_time, NormalLeaderboardList, MatchdayList, find_game, \
-    TimeLeaderboardList, TableList
+    TimeLeaderboardList, TableList, get_real_time
 
 
 class Infos(commands.Cog):
@@ -150,11 +150,18 @@ class Infos(commands.Cog):
             players = json.load(f)
         if name not in players:
             raise ValueError(f"Error : {name} is not in the players list.")
-        player: dict = players[name]
-        embed = Embed(title=f"{name}'s stats")
-        for stat, value in player.items():
-            embed.add_field(name=stat, value=value, inline=True)
-        await ctx.send(embed=embed)
+        player = players[name]
+        desc = "```py\n"
+        desc += f'{"name":<15} {name:<20} {"stat / mins %":<10}\n'
+        total_minutes = player["time"]
+        desc += f'{"time":<15} {total_minutes:<20} {get_real_time(total_minutes):<10}\n'
+        for s in ('goals', 'assists', 'saves', 'cs', 'own goals'):
+            val = player[s]
+            ratio = val / total_minutes if total_minutes != 0 else val
+            desc += f'{s:<15} {val:<20} {ratio * 100:<14.3f}\n'
+        desc += "```"
+
+        await ctx.send(embed=Embed(title=name, description=desc))
 
 
 def setup(bot):

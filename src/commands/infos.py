@@ -143,6 +143,19 @@ class Infos(commands.Cog):
         return f"📊  __**Player Pos:**__\n\n" + \
                "\n".join(f"> **{player}**: {stats}" for player, stats in players_stats.items()) + f"\n\n{'―' * 11}"
 
+    @commands.command(aliases=["s", "stat", "info"])
+    async def stats(self, ctx, *, name):
+        """See the stats of a specific player."""
+        with open("resources/players/players.json") as f:
+            players = json.load(f)
+        if name not in players:
+            raise ValueError(f"Error : {name} is not in the players list.")
+        player: dict = players[name]
+        embed = Embed(title=f"{name}'s stats")
+        for stat, value in player.items():
+            embed.add_field(name=stat, value=value, inline=True)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Infos(bot))

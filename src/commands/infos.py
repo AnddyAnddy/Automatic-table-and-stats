@@ -161,7 +161,7 @@ class Infos(commands.Cog):
             desc += f'{s:<15} {val:<20} {r}\n'
         desc += "```"
 
-        await ctx.send(embed=Embed(title=name, description=desc))
+        await ctx.send(embed=Embed(title=name, description=desc).set_footer(text=f"Division {player['div']}"))
 
 
 def setup(bot):

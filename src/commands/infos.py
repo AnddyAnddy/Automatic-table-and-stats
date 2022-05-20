@@ -36,7 +36,7 @@ class Infos(commands.Cog):
             try:
                 data = data[f"{conf}"]
             except KeyError:
-                raise ValueError(f"Error : {conf} is not a valid division, must be 1 or 2")
+                raise ValueError(f"Error : {conf} is not a valid conference, must be western or eastern")
         data = sorted(data)
         await create_menu(TeamsList, ctx, data)
 
@@ -96,15 +96,15 @@ class Infos(commands.Cog):
 
     @commands.command(aliases=["r", "rlb"])
     async def ratio_leaderboard(self, ctx, key: typing.Literal["time", "goals", "assists", "saves", "cs", "og"],
-                                div: typing.Literal[1, 2] = 1, min_time=0):
+                                conf: typing.Literal["western", "eastern"] = "western", min_time=0):
         """See the ratio leaderboard of a specific stat.
 
         Available stats: time, goals, assists, saves, cs, og
-        Div: 1 for div 1 and 2 for div 1
+        conf: western or eastern
         Min time: the minimum time you want players to have played in order to appear in the leaderboard
         """
 
-        data = [p for p in sorted(Leaderboard.sort_by(key, div),
+        data = [p for p in sorted(Leaderboard.sort_by(key, conf),
                                   reverse=True,
                                   key=lambda x: x[1] / x[2] if x[2] != 0 else x[1])
                 if p[2] // 60 >= min_time
@@ -124,8 +124,8 @@ class Infos(commands.Cog):
         await create_menu(MatchdayList, ctx, data, matchday=matchday)
 
     @commands.command(aliases=["t"])
-    async def table(self, ctx, div: typing.Literal[1, 2] = 1):
-        """See the table of a specific division (1 or 2).
+    async def table(self, ctx, conf: typing.Literal["western", "eastern"] = "western"):
+        """See the table of a specific conference (1 or 2).
 
         Example:
             !table 1
@@ -136,7 +136,7 @@ class Infos(commands.Cog):
         def sort_key(t: Team):
             return t.points, t.goals_diff, t.goals_for, t.goals_against, t.wins, t.name
 
-        data = sorted(SERVER.table(div).teams.values(), key=lambda t: sort_key(t), reverse=True)
+        data = sorted(SERVER.table(conf).teams.values(), key=lambda t: sort_key(t), reverse=True)
         await create_menu(TableList, ctx, data)
 
     def format_player_stats(self, players_stats):
@@ -162,7 +162,7 @@ class Infos(commands.Cog):
             desc += f'{s:<15} {val:<20} {r}\n'
         desc += "```"
 
-        await ctx.send(embed=Embed(title=name, description=desc).set_footer(text=f"Division {player['div']}"))
+        await ctx.send(embed=Embed(title=name, description=desc).set_footer(text=f"Conference {player['conf']}"))
 
 
 def setup(bot):

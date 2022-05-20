@@ -41,26 +41,26 @@ class Team:
 
 
 class Table:
-    def __init__(self, div):
+    def __init__(self, conf):
         with open("resources/teams/teams.json") as f:
-            teams = json.load(f)[f"{div}"]
+            teams = json.load(f)[f"{conf}"]
             self.teams: dict[str, Team] = {team: Team(name=team) for team in teams}
         with open("resources/malus/malus.json") as malus_fp:
-            teams = json.load(malus_fp)[f"{div}"]
+            teams = json.load(malus_fp)[f"{conf}"]
             for team, malus in teams.items():
                 self.teams[team].malus = malus
-        self.div = div
+        self.conf = conf
         self.results_done = set()
 
     def update(self):
-        path = f"resources/tables/{self.div}.json"
+        path = f"resources/tables/{self.conf}.json"
         json.dump({}, open(path, "w+"))
         for filename in glob.glob("resources/results/*/*.json"):
             if filename in self.results_done:
                 continue
             with open(filename, "r") as f:
                 game: dict = json.load(f)
-                if game["div"] != self.div:
+                if game["conf"] != self.conf:
                     continue
                 self.results_done.add(filename)
                 score = game["score"]

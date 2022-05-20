@@ -162,20 +162,20 @@ class Server:
     def __init__(self):
         self.players: Players = Players()
         self.sorted = Sorted(self.players)
-        self.table_div1 = Table("western")
-        self.table_div2 = Table("eastern")
+        self.table_west = Table("western")
+        self.table_east = Table("eastern")
 
     def update(self):
         Updater().update_all()
         self.players: Players = Players()
         self.sorted = Sorted(self.players)
-        self.table_div1 = Table("western")
-        self.table_div2 = Table("eastern")
-        self.table_div1.update()
-        self.table_div2.update()
+        self.table_west = Table("western")
+        self.table_east = Table("eastern")
+        self.table_west.update()
+        self.table_east.update()
 
-    def table(self, div) -> Table:
-        return self.table_div1 if div.lower() in {"w", "west", "western"} else self.table_div2
+    def table(self, conf) -> Table:
+        return self.table_west if conf.lower() in {"w", "west", "western"} else self.table_east
 
 
 SERVER = Server()

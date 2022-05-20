@@ -183,10 +183,10 @@ class Admin(commands.Cog):
     async def add_malus(self, ctx, team):
         with open("resources/malus/malus.json") as malus_fp:
             teams = json.load(malus_fp)
-            all_teams = list(teams["div1"].keys()) + list(teams["div2"].keys())
+            all_teams = list(teams["western"].keys()) + list(teams["eastern"].keys())
         if team not in all_teams:
             raise ValueError(f"Error : {team} is not a team I can find.")
-        div = "div1" if team in teams["div1"] else "div2"
+        div = "western" if team in teams["western"] else "eastern"
         teams[div][team] += 1
         with open("resources/malus/malus.json", "w+") as malus_fp:
             json.dump(teams, malus_fp, indent=4)

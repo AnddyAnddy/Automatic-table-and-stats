@@ -49,16 +49,6 @@ class Table:
             teams = json.load(malus_fp)[f"div{div}"]
             for team, malus in teams.items():
                 self.teams[team].malus = malus
-                name = self.teams[team].name.lower()
-                match name:
-                    case "smt":
-                        self.teams[team].losses += 2
-                        self.teams[team].goals_against += 10
-                        self.teams[team].games_played += 2
-                    case "watchers" | "cusco fc":
-                        self.teams[team].losses += 1
-                        self.teams[team].goals_against += 5
-                        self.teams[team].games_played += 1
         self.div = div
         self.results_done = set()
 

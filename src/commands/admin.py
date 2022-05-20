@@ -186,8 +186,8 @@ class Admin(commands.Cog):
             all_teams = list(teams["western"].keys()) + list(teams["eastern"].keys())
         if team not in all_teams:
             raise ValueError(f"Error : {team} is not a team I can find.")
-        div = "western" if team in teams["western"] else "eastern"
-        teams[div][team] += 1
+        conf = "western" if team in teams["western"] else "eastern"
+        teams[conf][team] += 1
         with open("resources/malus/malus.json", "w+") as malus_fp:
             json.dump(teams, malus_fp, indent=4)
         await ctx.send(embed=Embed(color=Color.DEFAULT, description=f"One malus was added to {team}"))

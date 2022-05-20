@@ -31,7 +31,7 @@ class Infos(commands.Cog):
         with open("resources/teams/teams.json", "r") as f:
             data = json.load(f)
         if not div:
-            data = data["div1"] + data["div2"]
+            data = data["western"] + data["eastern"]
         else:
             try:
                 data = data[f"div{div}"]

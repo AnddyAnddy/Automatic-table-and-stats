@@ -162,15 +162,15 @@ class Server:
     def __init__(self):
         self.players: Players = Players()
         self.sorted = Sorted(self.players)
-        self.table_div1 = Table(1)
-        self.table_div2 = Table(2)
+        self.table_div1 = Table("western")
+        self.table_div2 = Table("eastern")
 
     def update(self):
         Updater().update_all()
         self.players: Players = Players()
         self.sorted = Sorted(self.players)
-        self.table_div1 = Table(1)
-        self.table_div2 = Table(2)
+        self.table_div1 = Table("western")
+        self.table_div2 = Table("eastern")
         self.table_div1.update()
         self.table_div2.update()
 

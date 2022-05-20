@@ -125,12 +125,8 @@ class Infos(commands.Cog):
 
     @commands.command(aliases=["t"])
     async def table(self, ctx, conf: typing.Literal["western", "eastern"] = "western"):
-        """See the table of a specific conference (1 or 2).
+        """See the table of a specific conference.
 
-        Example:
-            !table 1
-                or
-            !t 2
         """
 
         def sort_key(t: Team):

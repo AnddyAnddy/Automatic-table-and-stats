@@ -42,7 +42,7 @@ class Updater:
                         for player, n in players.items():
                             if player not in self.players_db:
                                 self.players_db[player] = {stat: 0 for stat in Matching.player_to_game}
-                                self.players_db[player]["div"] = game["div"]
+                                self.players_db[player]["conf"] = game["conf"]
                             self.players_db[player][convert_to_player_stat] += n
 
         with open("resources/players/players.json", "w+") as db:

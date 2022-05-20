@@ -85,12 +85,12 @@ class Infos(commands.Cog):
 
     @commands.group(invoke_without_command=True, aliases=["lb"])
     async def leaderboard(self, ctx, key: typing.Literal["time", "goals", "assists", "saves", "cs", "og"],
-                          div: typing.Literal[1, 2] = None):
+                          conf: typing.Literal["western", "eastern"] = None):
         """See the leaderboard of a specific stat.
 
         Available stats: time, goals, assists, saves, cs, og
         """
-        data = Leaderboard.sort_by(key, div)
+        data = Leaderboard.sort_by(key, conf)
         cls = TimeLeaderboardList if key == "time" else NormalLeaderboardList
         await create_menu(cls, ctx, data, key=key)
 

@@ -122,7 +122,7 @@ class Data:
     def _get_score(self, infos: list[str]):
         with open("resources/teams/teams.json") as f:
             teams = json.load(f)
-            all_teams = teams["western"] + teams["div2"]
+            all_teams = teams["western"] + teams["eastern"]
         try:
             score = [line for line in infos if any(team in line for team in all_teams)][0]
             score = re.split(r" +(\d+).*(\d+) +", score)

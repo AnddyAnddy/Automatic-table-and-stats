@@ -43,17 +43,17 @@ class Team:
 class Table:
     def __init__(self, div):
         with open("resources/teams/teams.json") as f:
-            teams = json.load(f)[f"div{div}"]
+            teams = json.load(f)[f"{div}"]
             self.teams: dict[str, Team] = {team: Team(name=team) for team in teams}
         with open("resources/malus/malus.json") as malus_fp:
-            teams = json.load(malus_fp)[f"div{div}"]
+            teams = json.load(malus_fp)[f"{div}"]
             for team, malus in teams.items():
                 self.teams[team].malus = malus
         self.div = div
         self.results_done = set()
 
     def update(self):
-        path = f"resources/tables/div{self.div}.json"
+        path = f"resources/tables/{self.div}.json"
         json.dump({}, open(path, "w+"))
         for filename in glob.glob("resources/results/*/*.json"):
             if filename in self.results_done:

@@ -21,12 +21,12 @@ class Infos(commands.Cog):
         self._channels: dict[int, discord.abc.Messageable] = dict()
 
     @commands.command()
-    async def teams(self, ctx, div: typing.Literal[1, 2] = 1):
+    async def teams(self, ctx, div: typing.Literal["western", "eastern"] = "western"):
         """Get the teams.
 
-        Get teams from both div: !teams
-        Get teams from div 1: !teams 1
-        Get teams from div 2: !teams 2
+        Get teams from both conferences: !teams
+        Get teams from western: !teams western
+        Get teams from div eastern: !teams eastern
         """
         with open("resources/teams/teams.json", "r") as f:
             data = json.load(f)

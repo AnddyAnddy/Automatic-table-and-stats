@@ -122,7 +122,7 @@ class Data:
     def _get_score(self, infos: list[str]):
         with open("resources/teams/teams.json") as f:
             teams = json.load(f)
-            all_teams = teams["div1"] + teams["div2"]
+            all_teams = teams["western"] + teams["div2"]
         try:
             score = [line for line in infos if any(team in line for team in all_teams)][0]
             score = re.split(r" +(\d+).*(\d+) +", score)
@@ -133,7 +133,7 @@ class Data:
             args_score = score[0], int(score[1]), int(score[2]), score[3]
             self._data["score"] = {args_score[0]: args_score[1], args_score[3]: args_score[2]}
             self._data["title"] = f"{args_score[0]} {args_score[1]} - {args_score[2]} {args_score[3]}"
-            self._data["div"] = 1 if args_score[0] in teams["div1"] else 2
+            self._data["div"] = 1 if args_score[0] in teams["western"] else 2
         except Exception:
             self._data["score"] = "Unknown"
             self._data["title"] = "Unknown"

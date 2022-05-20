@@ -21,22 +21,22 @@ class Infos(commands.Cog):
         self._channels: dict[int, discord.abc.Messageable] = dict()
 
     @commands.command()
-    async def teams(self, ctx, div: typing.Literal["western", "eastern"] = "western"):
+    async def teams(self, ctx, conf: typing.Literal["western", "eastern"] = "western"):
         """Get the teams.
 
         Get teams from both conferences: !teams
         Get teams from western: !teams western
-        Get teams from div eastern: !teams eastern
+        Get teams from conf eastern: !teams eastern
         """
         with open("resources/teams/teams.json", "r") as f:
             data = json.load(f)
-        if not div:
+        if not conf:
             data = data["western"] + data["eastern"]
         else:
             try:
-                data = data[f"div{div}"]
+                data = data[f"{conf}"]
             except KeyError:
-                raise ValueError(f"Error : {div} is not a valid division, must be 1 or 2")
+                raise ValueError(f"Error : {conf} is not a valid division, must be 1 or 2")
         data = sorted(data)
         await create_menu(TeamsList, ctx, data)
 
